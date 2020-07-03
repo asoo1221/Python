@@ -1,0 +1,54 @@
+import urllib.request
+import requests
+import smtplib
+from email.message import EmailMessage
+import MyConfig
+
+
+MyWebsite = "https://y2proj-messaging-b99ab.web.app/"
+Webpage = requests.get(MyWebsite)
+print("The current status is", Webpage)
+
+
+Email = MyConfig.MY_EMAIL
+Password = MyConfig.MY_PASS
+
+if Webpage.status_code == 200: # 200 status code means the website is functional 
+
+    print("Website is up")
+    print("Check email for validation")
+
+    smtp = smtplib.SMTP('smtp.gmail.com:587') # port that is being used 
+    smtp.ehlo() #identifier
+    smtp.starttls() #upgrading insecure to secure connections 
+
+    smtp.login(Email, Password)
+
+
+    SubjectOfEmail = 'Website is up'
+    BodyOfMessage = 'Website is currently running :) '
+    Message = f'Subject: {SubjectOfEmail}\n\n\n{BodyOfMessage}'
+
+    smtp.sendmail(Email, 'Email', Message)
+
+
+elif Webpage.status_code != 200: #if the status code is not 200 then it will be a 404 status code meaning that the site is not up
+
+    
+    smtp = smtplib.SMTP('smtp.gmail.com:587') #Port that is being used 
+    smtp.ehlo() #identifier
+    smtp.starttls() #upgrading insecure to secure connections 
+
+    smtp.login(Email, Password)
+
+    print("Website is down")
+    print("Check email for validation")
+
+    SubjectOfEmail = 'Website is down'
+    BodyOfMessage = 'Website is down make sure to deploy :)'
+    Message = f'Subject: {SubjectOfEmail}\n\n\n{BodyOfMessage}'
+
+    smtp.sendmail(Email, '@gmail.com', Message)
+
+
+
