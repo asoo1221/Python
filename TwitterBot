@@ -1,0 +1,69 @@
+import tweepy
+import time
+
+
+#Auth keys
+
+consumerKey = 
+consumerSecret = 
+accessToken= 
+accessTokenSecret = 
+
+
+auth = tweepy.OAuthHandler(consumerKey, consumerSecret)
+auth.set_access_token(accessToken, accessTokenSecret)
+api = tweepy.API(auth)
+
+
+#Status Update
+def update_status(update):
+    update = api.update_status(update)
+    print(update)
+
+
+update_status('This is another test1')
+
+#Get User information
+
+def get_user():
+    user = api.get_user(username)
+    print(user.screen_name)
+    print(user.followers_count)
+    
+    for friend in user.friends():
+        print(friend.screen_name)
+
+
+username = input("Enter the username that you want: ")
+get_user()
+
+#Liking every tweet with a certain keyword
+
+search = 'Test'
+nrTweets = 1
+
+for tweet in tweepy.Cursor(api.search, search).items(nrTweets):
+    try:
+        print('Tweet Liked')
+        tweet.favorite()
+        time.sleep(2)
+    except tweepy.TweepError as e:
+        print(e.reason)
+    except StopIteration:
+        break
+
+
+#Retweeing with a keyword
+search = 'Aqworlds'
+nrTweets = 1
+
+for tweet in tweepy.Cursor(api.search, search).items(nrTweets):
+    try:
+        print('Tweet Retweet')
+        tweet.retweet()
+        time.sleep(2)
+    except tweepy.TweepError as e:
+        print(e.reason)
+    except StopIteration:
+        break
+
