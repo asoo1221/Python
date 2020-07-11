@@ -1,0 +1,63 @@
+from forex_python.converter import CurrencyRates  
+from forex_python.bitcoin import BtcConverter
+from datetime import datetime
+import tweepy
+import time
+
+
+
+
+# Auth Keys
+
+consumerKey = ""
+consumerSecret = ""
+accessToken = ""
+accessTokenSecret = ""
+
+auth = tweepy.OAuthHandler(consumerKey, consumerSecret)
+auth.set_access_token(accessToken, accessTokenSecret)
+api = tweepy.API(auth)
+
+
+print("Do you want to see the currencies")
+answer = input("Enter yes or no: ")
+if answer == 'yes':
+    print("You may proceed")
+    
+
+
+else:
+    print('you have exited')
+    exit()
+
+
+def ConverterRates():
+    c = CurrencyRates()
+    
+    BaseCurrency = input('Enter the base currency that you want to input: ')
+    ConvertCurrency = input("Enter the convert currency that you want to input: ")
+    TotalAmount = float(input("Enter the total amount you want to convert: "))
+   
+    
+    
+    rates = c.get_rate(BaseCurrency, ConvertCurrency)
+    print(rates)
+
+    Result = (TotalAmount) * (rates)
+    Result_Rounded = round(Result, 2)
+    
+
+    print('You have converted', TotalAmount, BaseCurrency, 'from', BaseCurrency, 'to' , ConvertCurrency, 'and the answer is', Result_Rounded, ConvertCurrency)
+   
+
+
+
+    Status= api.update_status(('You have converted', TotalAmount, BaseCurrency, 'from', BaseCurrency, 'to' , ConvertCurrency, 'and the answer is', Result_Rounded, ConvertCurrency))
+    print(Status)
+
+
+
+
+ConverterRates()
+
+    
